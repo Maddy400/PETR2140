@@ -11,6 +11,9 @@ class User(db.Model, UserMixin):
     last_name = db.Column(db.String(100))
     booking = db.relationship('Bookings')
 
+    def get_id(self):
+        return str(self.user_id)
+
 class Tutor(db.Model, UserMixin):
     tutor_id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(100), unique=True)
