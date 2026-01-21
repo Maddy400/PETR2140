@@ -1,6 +1,6 @@
 from . import db
 from flask_login import UserMixin
-
+from sqlalchemy.sql import func
 
 
 class User(db.Model, UserMixin):
@@ -9,6 +9,7 @@ class User(db.Model, UserMixin):
     password = db.Column(db.String(150))
     first_name = db.Column(db.String(100))
     last_name = db.Column(db.String(100))
+    booking = db.relationship('Bookings')
 
 class Tutor(db.Model, UserMixin):
     tutor_id = db.Column(db.Integer, primary_key=True)
@@ -16,6 +17,7 @@ class Tutor(db.Model, UserMixin):
     password = db.Column(db.String(150))
     first_name = db.Column(db.String(100))
     last_name = db.Column(db.String(100))
+    booking = db.relationship('Bookings')
 
 class Admin(db.Model, UserMixin):
     admin_id = db.Column(db.Integer, primary_key=True)
@@ -24,10 +26,11 @@ class Admin(db.Model, UserMixin):
 
 class Bookings(db.Model):
     booking_id = db.Column(db.Integer, primary_key=True)
-    tutor_id = db.Column(db.Integer)
-    user_id = db.Column(db.Integer)
-    date = db.Column(db.Date)
-    time = db.Column(db.Time)
+    tutor_id = db.Column(db.Integer, db.ForeignKey('tutor.tutor_id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('user.user_id'))
+    date = db.Column(db.DateTime)
+    time = db.Column(db.DateTime)
+
 
 class Resources(db.Model):
     resource_id = db.Column(db.Integer, primary_key=True)
