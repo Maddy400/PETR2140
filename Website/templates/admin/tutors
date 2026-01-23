@@ -1,0 +1,19 @@
+<h2>Manage Tutors</h2>
+
+<form method="POST" action="{{ url_for('views.add_tutor') }}">
+  <input name="email" placeholder="Email" required>
+  <input name="first_name" placeholder="First name" required>
+  <input name="last_name" placeholder="Last name" required>
+  <input name="password" placeholder="Temp password" required>
+  <button>Add Tutor</button>
+</form>
+
+<hr>
+
+{% for tutor in tutors %}
+  <p>
+    {{ tutor.first_name }} {{ tutor.last_name }} ({{ tutor.email }})
+    <a href="{{ url_for('views.delete_tutor', user_id=tutor.user_id) }}">Delete</a>
+  </p>
+{% endfor %}
+

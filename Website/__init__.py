@@ -11,6 +11,7 @@ def create_app():
     app.config['SECRET_KEY'] = 'PETR2140'
     app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{DB_NAME}'
     db.init_app(app)
+    app.config['UPLOAD_FOLDER'] = 'website/static/resources'
 
     
 
@@ -43,3 +44,6 @@ def create_database(app):
     if not path.exists('website/' + DB_NAME):
         db.create_all(app=app)
         print("Created Database")
+
+
+

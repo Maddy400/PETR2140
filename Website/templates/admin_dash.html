@@ -3,3 +3,12 @@
 {%block content%}
 <h1>This is the  admin dash page</h1>
 {%endblock%}
+
+<h2>Tutors</h2>
+
+{% for tutor in tutors %}
+  <p>
+    {{ tutor.first_name }} {{ tutor.last_name }} ({{ tutor.email }})
+    <a href="/admin/tutors/delete/{{ tutor.user_id }}">Delete</a>
+  </p>
+{% endfor %}

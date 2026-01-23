@@ -25,4 +25,5 @@ class Bookings(db.Model):
 
 class Resources(db.Model):
     resource_id = db.Column(db.Integer, primary_key=True)
-    resource_url = db.Column(db.String)
+    title = db.Column(db.String(100))
+    filename = db.Column(db.String(200))
