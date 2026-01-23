@@ -1,14 +1,20 @@
-{%extends "base.html"%} {% block title %}Admin dash{% endblock %}
-
-{%block content%}
-<h1>This is the  admin dash page</h1>
-{%endblock%}
-
-<h2>Tutors</h2>
-
-{% for tutor in tutors %}
-  <p>
-    {{ tutor.first_name }} {{ tutor.last_name }} ({{ tutor.email }})
-    <a href="/admin/tutors/delete/{{ tutor.user_id }}">Delete</a>
-  </p>
-{% endfor %}
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-5">
+    <h1>Admin Dashboard</h1>
+    <div class="row mt-4">
+        <div class="col-md-3">
+            <a href="{{ url_for('views.manage_tutors') }}" class="btn btn-primary w-100 mb-3">Manage Tutors</a>
+        </div>
+        <div class="col-md-3">
+            <a href="{{ url_for('views.manage_bookings') }}" class="btn btn-success w-100 mb-3">Manage Bookings</a>
+        </div>
+        <div class="col-md-3">
+            <a href="{{ url_for('views.manage_resources') }}" class="btn btn-info w-100 mb-3">Manage Resources</a>
+        </div>
+        <div class="col-md-3">
+            <a href="{{ url_for('views.site_stats') }}" class="btn btn-warning w-100 mb-3">Site Statistics</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
