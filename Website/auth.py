@@ -25,7 +25,7 @@ def login():
 
 
 
-    return render_template("login.html")
+    return render_template("login.html", user = current_user)
 
 @auth.route('/logout')
 @login_required
@@ -65,4 +65,4 @@ def sign_up():
             return redirect(url_for('views.home'))
 
 
-    return render_template("sign_up.html")
+    return render_template("sign_up.html", user = current_user)
