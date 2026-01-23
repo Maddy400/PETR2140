@@ -5,31 +5,19 @@ from sqlalchemy.sql import func
 
 class User(db.Model, UserMixin):
     user_id = db.Column(db.Integer, primary_key=True)
-    email = db.Column(db.String(100), unique=True)
-    password = db.Column(db.String(150))
+    email = db.Column(db.String(100), unique=True, nullable = False)
+    password = db.Column(db.String(150), nullable = False)
     first_name = db.Column(db.String(100))
     last_name = db.Column(db.String(100))
+    role = db.Column(db.String(15), nullable = False, default = 'student')
     booking = db.relationship('Bookings')
 
     def get_id(self):
         return str(self.user_id)
 
-class Tutor(db.Model, UserMixin):
-    tutor_id = db.Column(db.Integer, primary_key=True)
-    email = db.Column(db.String(100), unique=True)
-    password = db.Column(db.String(150))
-    first_name = db.Column(db.String(100))
-    last_name = db.Column(db.String(100))
-    booking = db.relationship('Bookings')
-
-class Admin(db.Model, UserMixin):
-    admin_id = db.Column(db.Integer, primary_key=True)
-    email = db.Column(db.String(100), unique=True)
-    password = db.Column(db.String(150))
-
 class Bookings(db.Model):
     booking_id = db.Column(db.Integer, primary_key=True)
-    tutor_id = db.Column(db.Integer, db.ForeignKey('tutor.tutor_id'))
+    tutor_id = db.Column(db.Integer, db.ForeignKey('user.user_id'))
     user_id = db.Column(db.Integer, db.ForeignKey('user.user_id'))
     date = db.Column(db.DateTime)
     time = db.Column(db.DateTime)

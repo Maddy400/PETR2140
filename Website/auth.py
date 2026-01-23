@@ -13,17 +13,24 @@ def login():
         password = request.form.get('password')
 
         user = User.query.filter_by(email=email).first()
+
         if user:
             if check_password_hash(user.password, password):
-                flash('Logged In Successfully', category = 'success')
                 login_user(user, remember=True)
-                return redirect(url_for('views.home'))
+                flash('Logged In Successfully', category = 'success')
+                
+                if user.role == 'admin':
+                    return redirect(url_for('views.admin_home'))
+
+                elif user.role == 'tutor':
+                    return redirect(url_for('views.tutor_home'))
+                
+                else:
+                    return redirect(url_for('views.home'))
             else:
                 flash("Incorrect password", category = 'error')
         else:
             flash("Email does not exist", category = 'error')
-
-
 
     return render_template("login.html", user = current_user)
 
@@ -57,7 +64,8 @@ def sign_up():
         elif len(password1) < 8:
             flash("Password should be longer than 8 characters", category = 'error')
         else:
-            new_user = User(email = email, first_name = first_name, password = generate_password_hash(password1, method = 'pbkdf2:sha256'))
+            new_user = User(email=email, first_name=first_name, last_name=last_name, password=generate_password_hash(password1), role='student')
+
             db.session.add(new_user)
             db.session.commit()
             login_user(user, remember=True)

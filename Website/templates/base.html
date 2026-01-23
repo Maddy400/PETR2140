@@ -18,6 +18,13 @@
                 <div class="navbar-nav">
                     {% if user.is_authenticated %}
                     <a class="nav-item nav-link" id="home" href="/">Home</a>
+                    {% if current_user.role == 'admin' %}
+                    <a class="nav-item nav-link" id="admin_dash" href="/admin_dash">Admin</a>
+                    {% endif %}
+                    {% if current_user.role == 'tutor' %}
+                    <a href="/tutor_home">Tutor</a>
+                    {% endif %}
+                    <a class="nav-item nav-link" id="home" href="/">Bookings</a>
                     <a class="nav-item nav-link" id="logout" href="/logout">Log Out</a>
                     {% else %}
                     <a class="nav-item nav-link" id="login" href="/login">Login</a>
