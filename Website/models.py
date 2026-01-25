@@ -29,3 +29,8 @@ class Resources(db.Model):
     resource_id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(150), nullable=False)
     filename = db.Column(db.String(150), nullable=False)
+
+class Contact(db.Model):
+    contact_id = db.Column(db.Integer, primary_key=True)
+    email = db.Column(db.String(100), unique=True, nullable=False)
+    reason = db.Column(db.String(10000), nullable=False)

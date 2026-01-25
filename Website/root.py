@@ -148,3 +148,14 @@ def site_stats():
         tutors=User.query.filter_by(role='tutor').count(),
         bookings=Bookings.query.count()
     )
+
+@views.route('/booking', methods=['GET', 'POST'])
+@login_required
+def booking():
+    # Logic to book a session
+    return render_template('booking.html')
+
+@views.route('/contact', methods=['GET', 'POST'])
+@login_required
+def contact():
+    return render_template('contact.html')
