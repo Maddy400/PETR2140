@@ -241,12 +241,12 @@ def booking():
 
 
 
-@views.route('/tutor/sessions')
+@views.route('/tutor/home')
 @login_required
 @role_required('tutor')
 def tutor_bookings():
     # Tutors only see their bookings
-    return render_template('tutor/sessions.html')
+    return render_template('tutor/home.html')
 
 
 
