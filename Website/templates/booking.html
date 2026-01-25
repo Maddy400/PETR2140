@@ -2,4 +2,46 @@
 
 {%block content%}
 <h1>This is the Booking page</h1>
+
+<link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js"></script>
+
+<div id="calendar">
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    var calendar = new FullCalendar.Calendar(document.getElementById('calendar'), {
+        initialView: 'timeGridWeek',
+        selectable: true,
+        events: '/api/bookings',
+
+        select: function(info) {
+            let start = info.startStr;
+            let end = info.endStr;
+
+            if (confirm(`Book from ${start} to ${end}?`)) {
+                fetch('/booking', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({ start, end })
+                }).then(() => location.reload());
+            }
+        }
+    });
+
+    calendar.render();
+});
+</script>
+</div>
+
+<div id="duration">
+    <select id="duration">
+  <option value="30">30 minutes</option>
+  <option value="60">1 hour</option>
+  <option value="90">1.5 hours</option>
+</select>
+
+</div>
+
+
+
 {%endblock%}

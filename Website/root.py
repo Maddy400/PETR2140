@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, flash, redirect, url_for, abort, current_app
+from flask import Blueprint, render_template, request, flash, redirect, url_for, abort, current_app, jsonify
 from .models import User
 from werkzeug.security import generate_password_hash, check_password_hash
 from . import db
@@ -6,6 +6,7 @@ from .models import User, Bookings, Resources, Contact
 from flask_login import login_user, login_required, logout_user, current_user
 from .decorators import role_required
 import os
+from datetime import datetime
 
 
 
@@ -174,9 +175,58 @@ def contact():
     return render_template('contact.html')
 
 
-@views.route('/admin/contacts')
+@views.route('/admin/contacts', methods=['GET', 'POST'])
 @login_required
 @role_required('admin')
-def manage_contacts():
+def contacts():  
     contacts = Contact.query.all()
     return render_template('admin/contacts.html', contacts=contacts)
+
+@views.route('/api/bookings')
+@login_required
+def bookings_api():
+    bookings = Bookings.query.all()
+
+    events = []
+    for b in bookings:
+        events.append({
+            "title": "Booked",
+            "start": b.start_time.isoformat(),
+            "end": b.end_time.isoformat(),
+        })
+
+    return jsonify(events)
+
+from datetime import datetime
+
+@views.route('/booking', methods=['GET', 'POST'])
+@login_required
+def booking():
+    if request.method == 'POST':
+        data = request.get_json()
+
+        start = datetime.fromisoformat(data['start'])
+        end = datetime.fromisoformat(data['end'])
+
+        # Prevent double booking
+        conflict = Bookings.query.filter(
+            Bookings.start_time < end,
+            Bookings.end_time > start
+        ).first()
+
+        if conflict:
+            return {"error": "Time slot unavailable"}, 400
+
+        booking = Bookings(
+            tutor_id=1,  # later: choose tutor
+            student_id=current_user.user_id,
+            start_time=start,
+            end_time=end
+        )
+
+        db.session.add(booking)
+        db.session.commit()
+
+        return {"success": True}
+
+    return render_template('booking.html')
