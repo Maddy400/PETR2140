@@ -30,6 +30,9 @@
                 {% endif %}
 
                 <a class="nav-item nav-link" href="{{ url_for('auth.logout') }}">Log Out</a>
+                <a class="nav-item nav-link" href="{{ url_for('views.bookings') }}">Book a Session</a>
+                <a class="nav-item nav-link" href="{{ url_for('views.contact') }}">Contact Us</a>
+
             {% else %}
                 <a class="nav-item nav-link" href="{{ url_for('auth.login') }}">Login</a>
                 <a class="nav-item nav-link" href="{{ url_for('auth.sign_up') }}">Sign Up</a>
