@@ -1,9 +1,8 @@
-{% extends "base.html" %}
+{% extends "base.html" %}{% block title %}Tutors{% endblock %}
 {% block content %}
 <div class="container mt-5">
     <h2>Manage Tutors</h2>
 
-    <!-- Add Tutor Form -->
     <form method="POST" action="{{ url_for('views.add_tutor') }}" class="mb-4">
         <div class="row g-2">
             <div class="col">
