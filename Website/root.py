@@ -2,7 +2,7 @@ from flask import Blueprint, render_template, request, flash, redirect, url_for,
 from .models import User
 from werkzeug.security import generate_password_hash, check_password_hash
 from . import db
-from .models import User, Bookings, Resources
+from .models import User, Bookings, Resources, Contact
 from flask_login import login_user, login_required, logout_user, current_user
 from .decorators import role_required
 import os
@@ -159,3 +159,13 @@ def booking():
 @login_required
 def contact():
     return render_template('contact.html')
+
+
+@views.route('/admin/contacts')
+@login_required
+@role_required('admin')
+def manage_contacts():
+    contacts = Contact.query.all()
+    return render_template('admin/contacts.html', contacts=contacts)
+
+

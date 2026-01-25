@@ -25,6 +25,8 @@
                     <a class="nav-item nav-link" href="{{ url_for('views.manage_bookings') }}">Bookings</a>
                     <a class="nav-item nav-link" href="{{ url_for('views.manage_resources') }}">Resources</a>
                     <a class="nav-item nav-link" href="{{ url_for('views.site_stats') }}">Stats</a>
+                    <a class="nav-item nav-link" href="{{ url_for('views.contacts') }}">Contacts</a>
+
                 {% elif current_user.role == 'tutor' %}
                     <a class="nav-item nav-link" href="{{ url_for('views.tutor_home') }}">Tutor Dashboard</a>
                 {% endif %}
