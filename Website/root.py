@@ -79,6 +79,27 @@ def delete_tutor(user_id):
 
     return redirect(url_for('views.manage_tutors'))
 
+@views.route('/admin/tutors/edit/<int:user_id>', methods=['GET', 'POST'])
+@login_required
+@role_required('admin')
+def edit_tutor(user_id):
+    tutor = User.query.get_or_404(user_id)
+
+    if tutor.role != 'tutor':
+        abort(403)
+
+    if request.method == 'POST':
+        tutor.email = request.form.get('email')
+        tutor.first_name = request.form.get('first_name')
+        tutor.last_name = request.form.get('last_name')
+
+        db.session.commit()
+        flash("Tutor updated", "success")
+        return redirect(url_for('views.manage_tutors'))
+
+    return render_template('admin/edit_tutor.html', tutor=tutor)
+
+
 from .models import Bookings
 
 @views.route('/admin/bookings')
