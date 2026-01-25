@@ -179,12 +179,16 @@ def contacts():
 @views.route('/api/bookings')
 @login_required
 def bookings_api():
+    # If query parameter tutor_id is provided, filter by it
     tutor_id = request.args.get('tutor_id', type=int)
 
-    if tutor_id:
+    # If the current user is a tutor and no tutor_id is provided, show only their bookings
+    if current_user.role == 'tutor' and not tutor_id:
+        bookings = Bookings.query.filter_by(tutor_id=current_user.user_id).all()
+    elif tutor_id:
         bookings = Bookings.query.filter_by(tutor_id=tutor_id).all()
     else:
-        bookings = Bookings.query.all()
+        bookings = Bookings.query.all()  # admin sees all bookings
 
     events = []
     for b in bookings:
@@ -195,6 +199,7 @@ def bookings_api():
         })
 
     return jsonify(events)
+
 
 
 @views.route('/booking', methods=['GET', 'POST'])
@@ -233,5 +238,15 @@ def booking():
     # GET request: render template with list of tutors
     tutors = User.query.filter_by(role='tutor').all()
     return render_template('booking.html', tutors=tutors)
+
+
+
+@views.route('/tutor/sessions')
+@login_required
+@role_required('tutor')
+def tutor_bookings():
+    # Tutors only see their bookings
+    return render_template('tutor/sessions.html')
+
 
 
