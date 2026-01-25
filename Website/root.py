@@ -6,7 +6,7 @@ from .models import User, Bookings, Resources, Contact
 from flask_login import login_user, login_required, logout_user, current_user
 from .decorators import role_required
 import os
-from datetime import datetime
+from datetime import datetime, timedelta
 
 
 
@@ -179,19 +179,23 @@ def contacts():
 @views.route('/api/bookings')
 @login_required
 def bookings_api():
-    bookings = Bookings.query.all()
+    tutor_id = request.args.get('tutor_id', type=int)
+
+    if tutor_id:
+        bookings = Bookings.query.filter_by(tutor_id=tutor_id).all()
+    else:
+        bookings = Bookings.query.all()
 
     events = []
     for b in bookings:
         events.append({
-            "title": "Booked",
+            "title": f"{b.student.first_name} {b.student.last_name}",
             "start": b.start_time.isoformat(),
             "end": b.end_time.isoformat(),
         })
 
     return jsonify(events)
 
-from datetime import datetime
 
 @views.route('/booking', methods=['GET', 'POST'])
 @login_required
@@ -199,20 +203,23 @@ def booking():
     if request.method == 'POST':
         data = request.get_json()
 
+        tutor_id = int(data['tutor_id'])
         start = datetime.fromisoformat(data['start'])
-        end = datetime.fromisoformat(data['end'])
+        duration_minutes = int(data.get('duration', 30))  # default 30 min
+        end = start + timedelta(minutes=duration_minutes)
 
-        # Prevent double booking
+        # Prevent double booking for the tutor
         conflict = Bookings.query.filter(
+            Bookings.tutor_id == tutor_id,
             Bookings.start_time < end,
             Bookings.end_time > start
         ).first()
 
         if conflict:
-            return {"error": "Time slot unavailable"}, 400
+            return jsonify({"error": "This tutor is already booked for that time"}), 400
 
         booking = Bookings(
-            tutor_id=1,  # later: choose tutor
+            tutor_id=tutor_id,
             student_id=current_user.user_id,
             start_time=start,
             end_time=end
@@ -221,10 +228,10 @@ def booking():
         db.session.add(booking)
         db.session.commit()
 
-        return {"success": True}
-    
-    tutors = User.query.filter_by(role='tutor').all()
+        return jsonify({"success": True})
 
+    # GET request: render template with list of tutors
+    tutors = User.query.filter_by(role='tutor').all()
     return render_template('booking.html', tutors=tutors)
 
 

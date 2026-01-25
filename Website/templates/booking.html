@@ -1,51 +1,70 @@
-{%extends "base.html"%} {% block title %}Booking Home{% endblock %}
+{% extends "base.html" %}
+{% block title %}Booking Home{% endblock %}
 
-{%block content%}
-
+{% block content %}
 <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js"></script>
 
-<div id="calendar">
+<div class="container mt-4">
 
-<div id="duration">
-<select id="duration">
-  <option value="30">30 minutes</option>
-  <option value="60">1 hour</option>
-  <option value="90">1.5 hours</option>
-</select>
+    <!-- Controls -->
+    <div class="mb-3">
+        <label for="tutor">Select Tutor:</label>
+        <select id="tutor" class="form-select">
+            <option value="">-- Choose Tutor --</option>
+            {% for tutor in tutors %}
+                <option value="{{ tutor.user_id }}">
+                    {{ tutor.first_name }} {{ tutor.last_name }}
+                </option>
+            {% endfor %}
+        </select>
+    </div>
 
-<label for="tutor">Select Tutor:</label>
-<select id="tutor" class="form-select mb-3">
-    {% for tutor in tutors %}
-        <option value="{{ tutor.user_id }}">
-            {{ tutor.first_name }} {{ tutor.last_name }}
-        </option>
-    {% endfor %} 
+    <div class="mb-3">
+        <label for="duration">Session Length:</label>
+        <select id="duration" class="form-select">
+            <option value="30">30 minutes</option>
+            <option value="60">1 hour</option>
+            <option value="90">1.5 hours</option>
+        </select>
+    </div>
 
-</select>
+    <!-- Calendar -->
+    <div id="calendar"></div>
+</div>
 
 <script>
 document.addEventListener('DOMContentLoaded', function () {
-    var calendar = new FullCalendar.Calendar(document.getElementById('calendar'), {
+
+    let calendar = new FullCalendar.Calendar(document.getElementById('calendar'), {
         initialView: 'timeGridWeek',
         selectable: true,
-        events: '/api/bookings',
+
+        events: function(fetchInfo, successCallback) {
+            let tutorId = document.getElementById('tutor').value;
+            fetch(`/api/bookings?tutor_id=${tutorId}`)
+                .then(res => res.json())
+                .then(data => successCallback(data));
+        },
 
         select: function(info) {
             let tutorId = document.getElementById('tutor').value;
+            let duration = parseInt(document.getElementById('duration').value);
 
             if (!tutorId) {
-                alert("Please select a tutor");
+                alert("Please select a tutor first");
                 return;
             }
+
+            let start = new Date(info.start);
 
             fetch('/booking', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({
-                    start: info.startStr,
-                    end: info.endStr,
-                    tutor_id: tutorId
+                    start: start.toISOString(),
+                    tutor_id: tutorId,
+                    duration: duration
                 })
             })
             .then(res => res.json())
@@ -60,14 +79,12 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     calendar.render();
+
+    // Refetch events when tutor changes
+    document.getElementById('tutor').addEventListener('change', function() {
+        calendar.refetchEvents();
+    });
+
 });
 </script>
-
-
-
-
-</div>
-
-
-
-{%endblock%}
+{% endblock %}
