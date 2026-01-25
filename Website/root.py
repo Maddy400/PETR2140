@@ -158,6 +158,19 @@ def booking():
 @views.route('/contact', methods=['GET', 'POST'])
 @login_required
 def contact():
+    if request.method == 'POST':
+        email = request.form.get('email')
+        reason = request.form.get('reason')
+
+        if not email or not reason:
+            flash("All fields are required", "error")
+        else:
+            contact_msg = Contact(email=email, reason=reason)
+            db.session.add(contact_msg)
+            db.session.commit()
+            flash("Message sent!", "success")
+            return redirect(url_for('views.contact'))
+
     return render_template('contact.html')
 
 
@@ -167,5 +180,3 @@ def contact():
 def manage_contacts():
     contacts = Contact.query.all()
     return render_template('admin/contacts.html', contacts=contacts)
-
-

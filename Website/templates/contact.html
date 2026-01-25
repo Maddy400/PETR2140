@@ -1,20 +1,19 @@
-{%extends "base.html"%} {% block title %}Contact Us{% endblock %}
+{% extends "base.html" %}
+{% block title %}Contact Us{% endblock %}
 
-{%block content%}
-<h1>This is the Contact page</h1>
-
-
-
-<form method="POST">
-    <div class="form-group">
-        <label for="email">Email Address</label>
-        <input type="email" class="form-control" id="email" name="email" placeholder="Please enter email"/>
-    </div>
-    <div class="form-group">
-        <label for="reason">Reason</label>
-        <input type="text" class="form-control" id="reason" name="reason" placeholder="Please enter a reason"/>
-    </div>
-    <br />
-    <button type="submit" class="btn btn-primary">Submit</button>
-</form>
-{%endblock%}
+{% block content %}
+<div class="container mt-5">
+    <h2>Send us a message</h2>
+    <form method="POST">
+        <div class="mb-3">
+            <label>Email</label>
+            <input type="email" name="email" class="form-control" placeholder="Your email" required>
+        </div>
+        <div class="mb-3">
+            <label>Message</label>
+            <textarea name="reason" class="form-control" placeholder="Your message" rows="5" required></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Send</button>
+    </form>
+</div>
+{% endblock %}

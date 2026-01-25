@@ -1,8 +1,10 @@
 {% extends "base.html" %}
 {% block title %}Contact Forms{% endblock %}
+
 {% block content %}
 <div class="container mt-5">
     <h2>Contact Submissions</h2>
+    {% if contacts %}
     <table class="table table-striped">
         <thead>
             <tr>
@@ -19,5 +21,8 @@
             {% endfor %}
         </tbody>
     </table>
+    {% else %}
+    <p>No contact submissions yet.</p>
+    {% endif %}
 </div>
 {% endblock %}

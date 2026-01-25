@@ -32,5 +32,5 @@ class Resources(db.Model):
 
 class Contact(db.Model):
     contact_id = db.Column(db.Integer, primary_key=True)
-    email = db.Column(db.String(100), unique=True, nullable=False)
+    email = db.Column(db.String(100), nullable=False)
     reason = db.Column(db.String(10000), nullable=False)
