@@ -73,7 +73,13 @@ document.addEventListener('DOMContentLoaded', function () {
             }
 
             let start = new Date(info.start);
+            let subject = document.getElementById('subject').value;
 
+            if (!subject) {
+                alert("Please select a subject");
+                return;
+}
+                
             fetch('/booking', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},

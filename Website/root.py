@@ -193,7 +193,7 @@ def bookings_api():
     events = []
     for b in bookings:
         events.append({
-            "title": f"{b.student.first_name} {b.student.last_name}",
+            "title": f"{b.subject} {b.student.first_name} {b.student.last_name}",
             "start": b.start_time.isoformat(),
             "end": b.end_time.isoformat(),
         })
@@ -231,7 +231,8 @@ def booking():
             tutor_id=tutor_id,
             student_id=current_user.user_id,
             start_time=start,
-            end_time=end
+            end_time=end,
+            subject =subject
         )
 
         db.session.add(booking)
