@@ -209,9 +209,13 @@ def booking():
         data = request.get_json()
 
         tutor_id = int(data['tutor_id'])
+        subject = data.get('subject')
         start = datetime.fromisoformat(data['start'])
-        duration_minutes = int(data.get('duration', 30))  # default 30 min
+        duration_minutes = int(data.get('duration', 30))  
         end = start + timedelta(minutes=duration_minutes)
+
+        if not subject:
+            return jsonify({"error": "Subject is required"}), 400
 
         # Prevent double booking for the tutor
         conflict = Bookings.query.filter(

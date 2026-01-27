@@ -43,6 +43,10 @@
                 </td>
 
                 <td>
+                    ({ booking.subject })
+                </td>
+
+                <td>
                     <a href="{{ url_for('views.cancel_booking', booking_id=booking.booking_id) }}"
                        class="btn btn-danger btn-sm"
                        onclick="return confirm('Cancel this booking?');">

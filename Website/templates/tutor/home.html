@@ -16,7 +16,7 @@
 document.addEventListener('DOMContentLoaded', function () {
     let calendar = new FullCalendar.Calendar(document.getElementById('calendar'), {
         initialView: 'timeGridWeek',
-        selectable: false,  // tutors cannot book here, only view
+        selectable: false, 
         events: '/api/bookings'
     });
     calendar.render();

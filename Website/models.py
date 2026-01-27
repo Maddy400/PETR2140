@@ -38,6 +38,8 @@ class Bookings(db.Model):
 
     created_at = db.Column(db.DateTime, server_default=func.now())
 
+    subject = db.Column(db.String, nullable=False)
+
 
 class Resources(db.Model):
     resource_id = db.Column(db.Integer, primary_key=True)

@@ -29,6 +29,22 @@
         </select>
     </div>
 
+    <div class="mb-3">
+        <label for="subject">Select Subject:</label>
+        <select id="subject" class="form-select">
+            <option value="">-- Choose Subject --</option>
+            <option value="Maths">Maths</option>
+            <option value="English">English</option>
+            <option value="Biology">Biology</option>
+            <option value="Chemistry">Chemistry</option>
+            <option value="Physics">Physics</option>
+            <option value="Business">Business</option>
+            <option value="Psychology">Psychology</option>
+            <option value="Computer Science">Computer Science</option>
+            <option value="Engineering">Engineering</option>
+        </select>
+    </div>
+
     <!-- Calendar -->
     <div id="calendar"></div>
 </div>
@@ -64,7 +80,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 body: JSON.stringify({
                     start: start.toISOString(),
                     tutor_id: tutorId,
-                    duration: duration
+                    duration: duration,
+                    subject: subject
                 })
             })
             .then(res => res.json())
