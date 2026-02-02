@@ -4,11 +4,14 @@
 <h1 id="home_title">Academic Wizard</h1>
 
 <div id="overall">
-<div id="about">
+<div id="about_parent">
+    <div id="about_child">
     <h3 id="about_text">Academic Wizard is a growing academic skills and tutoring company offering online and in-person tutoring services. They specialize in helping students aged 10-18 improve their study skills, exam preparation, and subject-specific knowledge (Maths, English, Science).</h3>
+    </div>
 </div>
 
-<div id="subjects">
+<div id="subjects_parent">
+    <div id="subjects_child">
     <h3 id="subjects_text">Academic Wizard offer tutoring for many different subjects:</h3>
     <li id="subject_list">English</li>
     <li id="subject_list">Mathematics</li>
@@ -19,8 +22,39 @@
     <li id="subject_list">Psychology</li>
     <li id="subject_list">Computer Science</li>
     <li id="subject_list">Engineering</li>
-    <h3 id="book_now" href="/booking">Book a session now!</h3>
+    <a id="book_now" href="/booking">Book a session now!</a>
+</div>
+</div>
+
+<div id="testimonials_parent">
+<div id="testimonial1">
+    <h3>“Academic Wizard completely changed my son’s attitude toward learning. His tutor didn’t just help with Maths—they taught him how to study properly. His confidence and grades have improved so much.”</h3>
+    <h3>— Sarah M., Parent of Year 8 student</h3>
+</div>
+<div id="testimonial2">
+    <h3>“My tutor explained things in a way my teachers never had time to. Science finally makes sense, and I feel way more prepared for exams.”</h3>
+    <h3>— Ethan, Age 15</h3>
+</div>
+<div id="testimonial3">
+    <h3>“Academic Wizard doesn’t just teach subjects—they teach students how to learn. That’s what sets them apart.”</h3>
+    <h3>— Head of Year, Partner School</h3>
+</div>
 </div>
 
 </div>
+
+
+<footer>
+    <div id="footer_links">
+    <a href="/">Home</a>
+    <a href="/contact">Contact Us</a>
+    <a hre="/view_resources">Resources</a>
+    <a href="/booking">Book a Session</a>
+</div>
+<div id="footer_other">
+    <h3>Email: hello@academicwizard.co.uk</h3>
+    <h3>Phone: 01234 567890</h3>
+    <h3>© Academic Wizard 2026. All rights reserved.</h3>
+</div>
+</footer>
 {%endblock%}
